@@ -27,7 +27,7 @@ mkdir -p $dst/partial/$video
 	cd $dst/partial/$video
     # set -x
 	set -o pipefail
-	youtube-dl \
+    yt-dlp \
         -f "${YOUTUBE_DL_FORMAT}" \
         -o '%(id)s.f%(format_id)s.%(ext)s' \
         --newline \
