@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -E
+
 NUM_PARALLEL="${NUM_PARALLEL:-16}"
 
 if [[ $# -ne 1 ]]; then
@@ -20,11 +22,12 @@ fi
 
 mkdir -p "$dst"/{partial,complete}
 
+echo "find remaining videos to download"
 (
     cd "$dst"
     # Videos that are missing from YouTube.
     # User can clear partial/ to re-try.
-    find partial/ -name err.txt -print0 | xargs -0 grep -l -e "ERROR: Video unavailable" -e "ERROR: Private video" -e "ERROR: Sign in to confirm your age" -e "ERROR: This video has been removed" | \
+    find partial/ -name err.txt -print0 | xargs -0 grep -l -e "ERROR: Video unavailable" -e "ERROR: Private video" -e "ERROR: Sign in to confirm your age" -e "ERROR: requested format not available" -e "ERROR: This video is available to" -e "ERROR: The following content has been identified" -e "ERROR: This video has been removed" -e "ERROR: Join this channel to get access" | \
         awk '-F/' '{print $2}' >missing.txt
     echo "number of unavailable videos: $(wc -l missing.txt)"
     # Get list of videos that are not missing and not complete.
@@ -32,4 +35,5 @@ mkdir -p "$dst"/{partial,complete}
     echo "number of available videos that remain: $(wc -l remain.txt)"
 )
 # Download!
+echo "start downloading"
 cat "$dst/remain.txt" | shuf | xargs -n 1 -P "${NUM_PARALLEL}" ./download_one.sh "$dst"

@@ -25,5 +25,5 @@ cat ${DATASET}_segments.csv | grep -v '^#' | awk -F, '{print $1}' | uniq >${DST}
 NUM_PARALLEL=32 bash download.sh ${DST}/${DATASET}
 
 # Extract segments.
-cat ${DATASET}_segments.csv | awk -F, '{print $1,$2,$3}' | (cd ${DST}/${DATASET} && mkdir -p cut/ && xargs -l -P 12 bash -c 'ffmpeg -i complete/$0/$0*.m4a -ss $1 -to $2 cut/$0.ogg')
+cat ${DATASET}_segments.csv | awk -F, '{print $1,$2,$3}' | (cd ${DST}/${DATASET} && mkdir -p cut/ && xargs -l -P 12 bash -c 'ffmpeg -n -i complete/$0/$0*.m4a -ss $1 -to $2 cut/$0.ogg')
 ```

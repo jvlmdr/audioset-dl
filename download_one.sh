@@ -31,6 +31,7 @@ mkdir -p $dst/partial/$video
         -f "${YOUTUBE_DL_FORMAT}" \
         -o '%(id)s.f%(format_id)s.%(ext)s' \
         --newline \
+        --no-progress \
         ${YOUTUBE_DL_FLAGS} \
         -- "https://www.youtube.com/watch?v=$video" \
 		2>err.txt | tee out.txt
