@@ -27,7 +27,7 @@ echo "find remaining videos to download"
     cd "$dst"
     # Videos that are missing from YouTube.
     # User can clear partial/ to re-try.
-    find partial/ -name err.txt -print0 | xargs -0 grep -l -e "ERROR: Video unavailable" -e "ERROR: Private video" -e "ERROR: Sign in to confirm your age" -e "ERROR: requested format not available" -e "ERROR: This video is available to" -e "ERROR: The following content has been identified" -e "ERROR: This video has been removed" -e "ERROR: Join this channel to get access" | \
+    find partial/ -name err.txt -print0 | xargs -0 grep -l -e ": Video unavailable" -e ": Private video" -e ": Sign in to confirm your age" -e ": requested format not available" -e ": This video is available to" -e ": The following content has been identified" -e ": This video has been removed" -e ": Join this channel to get access" | \
         awk '-F/' '{print $2}' >missing.txt
     echo "number of unavailable videos: $(wc -l missing.txt)"
     # Get list of videos that are not missing and not complete.
